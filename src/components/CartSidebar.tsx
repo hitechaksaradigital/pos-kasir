@@ -142,7 +142,8 @@ export default function CartSidebar({
 
         <button
           onClick={onOpenPayment}
-          className="w-full bg-secondary-container text-on-secondary-container py-4 lg:py-8 rounded font-semibold text-xl lg:text-2xl leading-8 hover:bg-primary hover:text-on-primary transition-colors active:scale-95 flex items-center justify-center gap-3 lg:gap-4"
+          disabled={cart.length === 0}
+          className="w-full bg-secondary-container text-on-secondary-container py-4 lg:py-8 rounded font-semibold text-xl lg:text-2xl leading-8 transition-colors active:scale-95 flex items-center justify-center gap-3 lg:gap-4 disabled:opacity-50 disabled:cursor-not-allowed enabled:hover:bg-primary enabled:hover:text-on-primary"
         >
           <span className="material-symbols-outlined">payments</span>
           PAY

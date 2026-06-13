@@ -4,6 +4,7 @@ import TopBar from "./components/TopBar";
 import ProductGrid from "./components/ProductGrid";
 import CartSidebar from "./components/CartSidebar";
 import PaymentModal from "./components/PaymentModal";
+import ProductManagement from "./components/ProductManagement";
 import { Product, CartItem } from "./types";
 import { fetchProducts } from "./data/products";
 
@@ -77,7 +78,6 @@ export default function App() {
 
   const handleOpenPayment = useCallback(() => {
     if (cart.length === 0) {
-      alert("Cart is empty");
       return;
     }
     setIsMobileCartOpen(false);
@@ -117,35 +117,40 @@ export default function App() {
           onOpenMenu={() => setIsSidebarOpen(true)}
           cartItemCount={totalItems}
           onOpenCart={() => setIsMobileCartOpen(true)}
+          activeNav={activeNav}
         />
 
-        <div className="flex flex-1 overflow-hidden">
-          {isLoading ? (
-            <div className="flex-1 flex items-center justify-center">
-              <p className="text-on-surface-variant">Loading products...</p>
-            </div>
-          ) : (
-            <ProductGrid
-              products={products}
-              searchQuery={searchQuery}
-              onAddToCart={addToCart}
-            />
-          )}
+<div className="flex flex-1 overflow-hidden">
+           {isLoading ? (
+             <div className="flex-1 flex items-center justify-center">
+               <p className="text-on-surface-variant">Loading products...</p>
+             </div>
+           ) : activeNav === "products" ? (
+             <ProductManagement onProductsChange={setProducts} />
+           ) : (
+             <ProductGrid
+               products={products}
+               searchQuery={searchQuery}
+               onAddToCart={addToCart}
+             />
+           )}
 
-          {/* Cart Sidebar */}
-          <CartSidebar
-            cart={cart}
-            onUpdateQty={updateQty}
-            onOpenPayment={handleOpenPayment}
-            discount={discount}
-            onDiscountChange={setDiscount}
-            subtotal={subtotal}
-            tax={tax}
-            total={total}
-            isMobileOpen={isMobileCartOpen}
-            onMobileClose={() => setIsMobileCartOpen(false)}
-          />
-        </div>
+           {/* Cart Sidebar - hidden on products page */}
+           {activeNav !== "products" && (
+             <CartSidebar
+               cart={cart}
+               onUpdateQty={updateQty}
+               onOpenPayment={handleOpenPayment}
+               discount={discount}
+               onDiscountChange={setDiscount}
+               subtotal={subtotal}
+               tax={tax}
+               total={total}
+               isMobileOpen={isMobileCartOpen}
+               onMobileClose={() => setIsMobileCartOpen(false)}
+             />
+           )}
+         </div>
       </main>
 
       {/* Mobile Floating Cart Button */}
