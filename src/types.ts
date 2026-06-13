@@ -4,6 +4,8 @@ export interface Product {
   price: number;
   image: string;
   category: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface CartItem {

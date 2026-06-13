@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Product } from "../types";
-import { categories } from "../data/products";
+import { categories } from "../data/categories";
 
 interface ProductGridProps {
   products: Product[];

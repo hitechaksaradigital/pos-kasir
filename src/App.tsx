@@ -1,11 +1,11 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
 import TopBar from "./components/TopBar";
 import ProductGrid from "./components/ProductGrid";
 import CartSidebar from "./components/CartSidebar";
 import PaymentModal from "./components/PaymentModal";
-import { products } from "./data/products";
 import { Product, CartItem } from "./types";
+import { fetchProducts } from "./data/products";
 
 export default function App() {
   const [activeNav, setActiveNav] = useState("checkout");
@@ -13,10 +13,26 @@ export default function App() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [discount, setDiscount] = useState(0);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Mobile-specific state
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
+
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const data = await fetchProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Failed to load products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadProducts();
+  }, []);
 
   const totalItems = useMemo(
     () => cart.reduce((sum, item) => sum + item.qty, 0),
@@ -104,12 +120,17 @@ export default function App() {
         />
 
         <div className="flex flex-1 overflow-hidden">
-          {/* Product Grid */}
-          <ProductGrid
-            products={products}
-            searchQuery={searchQuery}
-            onAddToCart={addToCart}
-          />
+          {isLoading ? (
+            <div className="flex-1 flex items-center justify-center">
+              <p className="text-on-surface-variant">Loading products...</p>
+            </div>
+          ) : (
+            <ProductGrid
+              products={products}
+              searchQuery={searchQuery}
+              onAddToCart={addToCart}
+            />
+          )}
 
           {/* Cart Sidebar */}
           <CartSidebar
