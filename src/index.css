@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@theme {
+  --font-inter: "Inter", sans-serif;
+
+  /* Colors */
+  --color-tertiary-fixed: #82f9be;
+  --color-inverse-primary: #b2c5ff;
+  --color-tertiary-fixed-dim: #65dca4;
+  --color-background: #f8f9fb;
+  --color-surface-dim: #d9dadc;
+  --color-surface-container: #edeef0;
+  --color-on-background: #191c1e;
+  --color-surface-container-low: #f3f4f6;
+  --color-primary-fixed: #dae2ff;
+  --color-surface-variant: #e1e2e4;
+  --color-on-secondary: #ffffff;
+  --color-surface-tint: #0c56d0;
+  --color-on-surface-variant: #434654;
+  --color-outline: #737685;
+  --color-primary-container: #0052cc;
+  --color-on-primary-container: #c4d2ff;
+  --color-surface-container-highest: #e1e2e4;
+  --color-on-surface: #191c1e;
+  --color-inverse-on-surface: #f0f1f3;
+  --color-error: #ba1a1a;
+  --color-secondary-fixed: #d7e2ff;
+  --color-on-tertiary-container: #72e9af;
+  --color-on-primary: #ffffff;
+  --color-on-error: #ffffff;
+  --color-secondary-fixed-dim: #abc7ff;
+  --color-on-tertiary-fixed: #002113;
+  --color-secondary: #0059b8;
+  --color-on-primary-fixed-variant: #0040a2;
+  --color-on-primary-fixed: #001848;
+  --color-surface-container-high: #e7e8ea;
+  --color-secondary-container: #0071e6;
+  --color-primary: #003d9b;
+  --color-surface: #f8f9fb;
+  --color-surface-bright: #f8f9fb;
+  --color-outline-variant: #c3c6d6;
+  --color-tertiary: #004e32;
+  --color-on-secondary-fixed: #001b3f;
+  --color-on-secondary-container: #fefcff;
+  --color-on-error-container: #93000a;
+  --color-surface-container-lowest: #ffffff;
+  --color-inverse-surface: #2e3132;
+  --color-error-container: #ffdad6;
+  --color-tertiary-container: #006844;
+  --color-on-secondary-fixed-variant: #004590;
+  --color-primary-fixed-dim: #b2c5ff;
+  --color-on-tertiary-fixed-variant: #005235;
+  --color-on-tertiary: #ffffff;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.cart-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.cart-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.cart-scroll::-webkit-scrollbar-thumb {
+  background: #c3c6d6;
+  border-radius: 4px;
+}
+
+.active-tab {
+  position: relative;
+}
+.active-tab::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #003d9b;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #f8f9fb;
+  color: #191c1e;
+  overflow: hidden;
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.cart-item-animate {
+  animation: slideInFromRight 0.3s ease-out;
+}
