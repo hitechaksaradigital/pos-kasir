@@ -14,6 +14,15 @@ export default function App() {
   const [discount, setDiscount] = useState(0);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
+  // Mobile-specific state
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
+
+  const totalItems = useMemo(
+    () => cart.reduce((sum, item) => sum + item.qty, 0),
+    [cart]
+  );
+
   const addToCart = useCallback((product: Product) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.product.id === product.id);
@@ -55,6 +64,7 @@ export default function App() {
       alert("Cart is empty");
       return;
     }
+    setIsMobileCartOpen(false);
     setIsPaymentOpen(true);
   }, [cart.length]);
 
@@ -78,12 +88,20 @@ export default function App() {
         activeNav={activeNav}
         onNavChange={setActiveNav}
         onNewTransaction={handleNewTransaction}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
 
       {/* Main Content Area */}
-      <main className="ml-64 flex flex-col h-screen">
+      <main className="lg:ml-64 flex flex-col h-screen">
         {/* Top Bar */}
-        <TopBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+        <TopBar
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          onOpenMenu={() => setIsSidebarOpen(true)}
+          cartItemCount={totalItems}
+          onOpenCart={() => setIsMobileCartOpen(true)}
+        />
 
         <div className="flex flex-1 overflow-hidden">
           {/* Product Grid */}
@@ -103,9 +121,23 @@ export default function App() {
             subtotal={subtotal}
             tax={tax}
             total={total}
+            isMobileOpen={isMobileCartOpen}
+            onMobileClose={() => setIsMobileCartOpen(false)}
           />
         </div>
       </main>
+
+      {/* Mobile Floating Cart Button */}
+      {totalItems > 0 && (
+        <button
+          onClick={() => setIsMobileCartOpen(true)}
+          className="lg:hidden fixed bottom-4 right-4 z-[100] bg-primary text-on-primary shadow-2xl rounded-full px-5 py-3 flex items-center gap-2 active:scale-95 transition-all"
+        >
+          <span className="material-symbols-outlined">shopping_cart</span>
+          <span className="font-semibold text-sm">{totalItems} items</span>
+          <span className="font-bold text-sm">· ${total.toFixed(2)}</span>
+        </button>
+      )}
 
       {/* Payment Modal */}
       <PaymentModal
